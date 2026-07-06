@@ -1,0 +1,11 @@
+{
+  "projects": [
+    {
+      "name": "World-Bank",
+      "repo": "WorldBankfinancials/World-Bank",
+      "branch": "main",
+      "status": "active",
+      "framework": "react"
+    }
+  ]
+}
