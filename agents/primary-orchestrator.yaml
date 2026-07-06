@@ -1,0 +1,25 @@
+name: "primary-orchestrator"
+description: "Master orchestrator that coordinates all agents and tools"
+version: "1.0.0"
+model: "openrouter/deepseek/deepseek-r1:free"
+fallback_models:
+  - "openrouter/google/gemini-2.0-flash:free"
+  - "openrouter/groq/llama-3.1-8b-instant:free"
+tools:
+  - "github-mcp"
+  - "filesystem-mcp"
+  - "nexus-mcp"
+  - "hound-mcp"
+  - "multi-agent-mcp"
+subagents:
+  - "audit-agent"
+  - "fix-agent"
+  - "security-agent"
+  - "test-agent"
+  - "deploy-agent"
+memory:
+  type: "free-context-hub"
+  persistent: true
+execution:
+  max_iterations: 100
+  approval_required: true
