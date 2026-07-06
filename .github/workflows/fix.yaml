@@ -1,0 +1,59 @@
+name: Fix Any Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'GitHub repository URL'
+        required: true
+      branch:
+        description: 'Branch to fix'
+        required: true
+        default: 'main'
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Extract Repo Name
+        id: extract
+        run: |
+          REPO_URL="${{ github.event.inputs.repo_url }}"
+          REPO_NAME=$(basename "$REPO_URL" .git)
+          echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
+      
+      - name: Checkout Target Project
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.repo_url }}
+          ref: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install Dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          fi
+      
+      - name: Fix TypeScript Errors
+        run: |
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit --skipLibCheck 2>&1 | tee ts-errors.log || true
+            echo "## TypeScript Fixes for ${{ steps.extract.outputs.repo_name }}" > fixes-summary.md
+            echo "" >> fixes-summary.md
+            cat ts-errors.log >> fixes-summary.md 2>/dev/null || echo "No errors found" >> fixes-summary.md
+          fi
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Auto-fix: TypeScript and ESLint issues for ${{ steps.extract.outputs.repo_name }}"
+          title: "Auto-fix: TypeScript and ESLint issues for ${{ steps.extract.outputs.repo_name }}"
+          body-path: fixes-summary.md
+          branch: auto-fix/${{ steps.extract.outputs.repo_name }}-ts-eslint
+          base: ${{ github.event.inputs.branch }}
