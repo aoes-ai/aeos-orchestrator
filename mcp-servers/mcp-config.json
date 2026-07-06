@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "github": {
+      "url": "https://gitmcp.io/WorldBankfinancials/World-Bank"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./workspace"]
+    },
+    "terminal": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-terminal"]
+    },
+    "semgrep": {
+      "command": "semgrep",
+      "args": ["mcp"]
+    },
+    "trivy": {
+      "command": "trivy",
+      "args": ["mcp", "--listen", "localhost:8081"]
+    },
+    "chroma": {
+      "command": "python",
+      "args": ["-m", "mcp_chroma", "--host", "localhost", "--port", "8000"]
+    }
+  }
+}
