@@ -1,1 +1,17 @@
-
+name: "fix-agent"
+description: "Fixes all errors autonomously using multi-agent coordination"
+model: "openrouter/deepseek/deepseek-r1:free"
+tools:
+  - "nexus-mcp"
+  - "multi-agent-mcp"
+  - "github-mcp"
+  - "filesystem-mcp"
+workflow:
+  - step: "Read audit report"
+  - step: "Spawn subagents for each error type (imports, functions, types)"
+  - step: "Fix imports via Nexus-MCP symbol-level editing"
+  - step: "Fix functions via Nexus-MCP"
+  - step: "Fix integration and realtime issues"
+  - step: "Run tests (Vitest, Playwright, Supertest)"
+  - step: "Verify fixes with Nexus-MCP impact analysis"
+  - step: "Create PR with all fixes"
