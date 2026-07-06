@@ -1,25 +1,42 @@
 name: "primary-orchestrator"
 description: "Master orchestrator that coordinates all agents and tools"
 version: "1.0.0"
-model: "openrouter/deepseek/deepseek-r1:free"
+
+# Default model (uses Gemini API)
+model: "google/gemini-2.0-flash-exp"
+
+# Fallback models (auto-switches if rate-limited)
 fallback_models:
-  - "openrouter/google/gemini-2.0-flash:free"
+  - "deepseek/deepseek-r1:free"
   - "openrouter/groq/llama-3.1-8b-instant:free"
+  - "ollama/llama3.1"
+
+# Built-in tools that are always available
 tools:
   - "github-mcp"
   - "filesystem-mcp"
-  - "nexus-mcp"
-  - "hound-mcp"
-  - "multi-agent-mcp"
+  - "terminal-mcp"
+  - "postgresql-mcp"
+  - "redis-mcp"
+  - "chroma-mcp"
+
+# Available agents this orchestrator can delegate to
 subagents:
   - "audit-agent"
   - "fix-agent"
   - "security-agent"
   - "test-agent"
   - "deploy-agent"
+  - "build-agent"
+
+# Memory configuration
 memory:
-  type: "free-context-hub"
+  type: "chroma"
   persistent: true
+  path: "./memory/chroma"
+
+# Execution settings
 execution:
   max_iterations: 100
+  timeout: 3600
   approval_required: true
