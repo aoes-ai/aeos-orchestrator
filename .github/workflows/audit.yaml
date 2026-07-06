@@ -1,0 +1,75 @@
+name: Audit Any Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'GitHub repository URL'
+        required: true
+        default: 'https://github.com/WorldBankfinancials/World-Bank'
+      branch:
+        description: 'Branch to audit'
+        required: true
+        default: 'main'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Extract Repo Name
+        id: extract
+        run: |
+          REPO_URL="${{ github.event.inputs.repo_url }}"
+          REPO_NAME=$(basename "$REPO_URL" .git)
+          echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
+      
+      - name: Clone Target Repository
+        run: |
+          git clone ${{ github.event.inputs.repo_url }} project
+          cd project
+          git checkout ${{ github.event.inputs.branch }}
+          git log --oneline -5 > ../reports/${{ steps.extract.outputs.repo_name }}-commits.txt
+      
+      - name: Install Dependencies
+        run: |
+          cd project
+          if [ -f package.json ]; then
+            npm install 2>&1 | tee ../reports/${{ steps.extract.outputs.repo_name }}-npm-install.log || true
+          fi
+      
+      - name: Run Build
+        run: |
+          cd project
+          if [ -f package.json ]; then
+            npm run build 2>&1 | tee ../reports/${{ steps.extract.outputs.repo_name }}-build-errors.log || true
+          fi
+      
+      - name: Run TypeScript Check
+        run: |
+          cd project
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit 2>&1 | tee ../reports/${{ steps.extract.outputs.repo_name }}-ts-errors.log || true
+          fi
+      
+      - name: Generate Audit Report
+        run: |
+          REPO_NAME="${{ steps.extract.outputs.repo_name }}"
+          echo "# Audit Report for $REPO_NAME" > reports/$REPO_NAME-report.md
+          echo "" >> reports/$REPO_NAME-report.md
+          echo "## Repository: ${{ github.event.inputs.repo_url }}" >> reports/$REPO_NAME-report.md
+          echo "## Branch: ${{ github.event.inputs.branch }}" >> reports/$REPO_NAME-report.md
+          echo "## Date: $(date)" >> reports/$REPO_NAME-report.md
+          echo "" >> reports/$REPO_NAME-report.md
+          echo "### Recent Commits" >> reports/$REPO_NAME-report.md
+          cat reports/$REPO_NAME-commits.txt >> reports/$REPO_NAME-report.md
+          echo "" >> reports/$REPO_NAME-report.md
+          echo "### Build Errors" >> reports/$REPO_NAME-report.md
+          cat reports/$REPO_NAME-build-errors.log >> reports/$REPO_NAME-report.md 2>/dev/null || echo "No build errors" >> reports/$REPO_NAME-report.md
+      
+      - name: Upload Audit Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.extract.outputs.repo_name }}-audit-report
+          path: reports/${{ steps.extract.outputs.repo_name }}-report.md
