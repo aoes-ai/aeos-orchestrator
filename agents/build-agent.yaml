@@ -1,0 +1,17 @@
+name: "build-agent"
+description: "Builds new projects from scratch using greenfield builders"
+model: "google/gemini-2.0-flash-exp"
+tools:
+  - "github-mcp"
+  - "filesystem-mcp"
+  - "terminal-mcp"
+
+workflow:
+  - step: "Receive project description via Telegram"
+  - step: "Select appropriate greenfield builder"
+  - step: "Generate project code"
+  - step: "Set up repository"
+  - step: "Install dependencies"
+  - step: "Run build"
+  - step: "Deploy to Vercel"
+  - step: "Return deployment URL"
