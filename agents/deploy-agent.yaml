@@ -1,0 +1,14 @@
+name: "deploy-agent"
+description: "Deploys to Vercel"
+model: "openrouter/deepseek/deepseek-r1:free"
+tools:
+  - "github-mcp"
+  - "terminal-mcp"
+  - "http-mcp"
+workflow:
+  - step: "Read deployment configuration"
+  - step: "Run build"
+  - step: "Run tests"
+  - step: "Deploy to Vercel"
+  - step: "Verify deployment health"
+  - step: "Update deployment status"
