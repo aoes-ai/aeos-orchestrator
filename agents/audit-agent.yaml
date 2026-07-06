@@ -1,1 +1,16 @@
-
+name: "audit-agent"
+description: "Audits target repositories for all errors - TypeScript, imports, functions, security"
+model: "openrouter/deepseek/deepseek-r1:free"
+tools:
+  - "nexus-mcp"
+  - "hound-mcp"
+  - "github-mcp"
+workflow:
+  - step: "Clone target repository via GitHub MCP"
+  - step: "Run Nexus-MCP code graph analysis"
+  - step: "Identify imports, functions, types, dependencies"
+  - step: "Run npm install and build (collect errors)"
+  - step: "Run security scans (Gitleaks, Trivy, Semgrep)"
+  - step: "Research solutions via Hound MCP"
+  - step: "Generate comprehensive audit report"
+  - step: "Save report to ./reports/audit-{{timestamp}}.md"
