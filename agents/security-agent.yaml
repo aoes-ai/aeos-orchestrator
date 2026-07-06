@@ -1,0 +1,13 @@
+name: "security-agent"
+description: "Security scanning and autonomous fixes"
+model: "openrouter/deepseek/deepseek-r1:free"
+tools:
+  - "nexus-mcp"
+  - "github-mcp"
+workflow:
+  - step: "Run Gitleaks (secret detection)"
+  - step: "Run Trivy (vulnerability scanning)"
+  - step: "Run Semgrep (static analysis)"
+  - step: "Run OWASP Dependency-Check"
+  - step: "Auto-fix low-severity issues"
+  - step: "Create PR for high-severity issues"
