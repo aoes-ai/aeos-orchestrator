@@ -1,0 +1,279 @@
+# ============================================================
+# AEOS ORCHESTRATOR - Complete .gitignore
+# Combines Node.js, Python, Docker, IDE, and AEOS-specific rules
+# ============================================================
+
+# ----------------------------
+# Node.js / JavaScript / TypeScript
+# ----------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npm
+.eslintcache
+*.tsbuildinfo
+build/
+dist/
+out/
+*.log
+
+# ----------------------------
+# Python
+# ----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pythonenv*
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+*.pyi
+
+# ----------------------------
+# MCP Servers (Data & Runtime)
+# ----------------------------
+*.mcp.db
+*.mcp.sqlite
+mcp-servers/*/data/
+mcp-servers/*/logs/
+.claude/
+.cursor/
+.continue/
+
+# ----------------------------
+# AEOS Core Data
+# ----------------------------
+reports/
+*.report.md
+*.audit.json
+*.fix.json
+memory/
+*.memory.db
+chroma_data/
+qdrant_storage/
+*.vec
+agents/*.cache
+skills/*.cache
+
+# ----------------------------
+# AI Agent & Model Files
+# ----------------------------
+*.onnx
+*.pth
+*.pt
+*.bin
+*.gguf
+*.safetensors
+models/
+*.model
+*.weights
+
+# ----------------------------
+# Environment & Secrets
+# ----------------------------
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+*.secret
+*.token
+*.credentials
+
+# ----------------------------
+# Docker
+# ----------------------------
+docker-compose.override.yml
+docker-compose.*.yml
+*.dockerignore
+.docker/
+*.pid
+
+# ----------------------------
+# IDE / Editor
+# ----------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# ----------------------------
+# GitHub Actions & CI/CD
+# ----------------------------
+.github/*.tmp
+.github/*.cache
+*.workflow.tmp
+
+# ----------------------------
+# Logs & Temporary Files
+# ----------------------------
+logs/
+*.log
+*.tmp
+*.temp
+*.cache
+*.bak
+*.backup
+*.old
+tmp/
+temp/
+*.swp
+*.swo
+
+# ----------------------------
+# Testing
+# ----------------------------
+coverage/
+*.lcov
+*.test-results
+*.test-output
+playwright-report/
+test-results/
+vitest-results/
+*.snap
+*.snapshots
+
+# ----------------------------
+# Documentation Builds
+# ----------------------------
+docs/_build/
+docs/api/
+docs/generated/
+*.docset
+
+# ----------------------------
+# OS / System
+# ----------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.dll
+*.so
+*.dylib
+
+# ----------------------------
+# AEOS-Specific Exclusions
+# ----------------------------
+# Free-context-hub data
+.free-context-hub/
+*.guardrail.json
+
+# Quay data
+.quay/
+*.quay.db
+
+# Wallfacer data
+.wallfacer/
+*.wallfacer.spec
+
+# Odyssey data
+.odyssey/
+
+# Nexus-MCP data
+.nexus/
+*.nexus.graph
+
+# Hound-MCP data
+.hound/
+*.hound.cache
+
+# Multi-Agent MCP data
+.multi-agent/
+*.agent.state
+
+# AI LaunchKit
+ai-launchkit/
+*.launchkit
+
+# ----------------------------
+# Large Files & Archives
+# ----------------------------
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.iso
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.apk
+*.exe
+*.msi
+
+# ----------------------------
+# Security Scan Reports (Ignore generated reports)
+# ----------------------------
+gitleaks-report.json
+trivy-report.json
+semgrep-report.json
+dependency-check-report.json
+*.security.json
+
+# ----------------------------
+# Database files (unless you need them)
+# ----------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.sqlitedb
+
+# ----------------------------
+# Backup files from various tools
+# ----------------------------
+*.orig
+*.rej
+*.patch
+*.diff
+*.merge
+*.backup
+*.bak
+
+# ============================================================
+# END OF .gitignore
+# ============================================================
